@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\FormController;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +16,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::get('/', [FormController::class, 'index']);
+
+// Problem-1 & 2 route
+Route::post('/form-submit', [FormController::class, 'formSubmit'])->name('form-submit');
+
+// Problem-3 route
+Route::get('/page/{query}', [FormController::class, 'page']);
+
+// Problem-4 & 6 route
+Route::get('/request',[FormController::class, 'sendResponse']);
+
+// Problem-7 solution
+Route::post('/submit', function (Request $request):JsonResponse{
+    $email = $request->input('email');
+    return response()->json([
+        'success' => true,
+        'message' => 'Form submitted successfully.'
+    ]);
 });
